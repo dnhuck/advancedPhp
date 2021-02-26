@@ -2,6 +2,17 @@
 
 // class to handle interaction with the newsarticles table
 class NewsArticles {
+
+
+    var $articleTitle = "";
+    var $articleContent = "";
+    var $articleAuthor = "";
+    var $articleDate = "";
+
+    var $articleTitleErr = "";
+    var $articleContentErr = "";
+    var $articleAuthorErr = "";
+    var $articleDateErr = "";
 	
     // property to hold our data from our article
     var $articleData = array();
@@ -12,22 +23,29 @@ class NewsArticles {
 
     function __construct() {
         // create a connection to our database
-        $this->db = new PDO('mysql:host=localhost;dbname=wdv441_2021;charset=utf8', 
-            'wdv441_user', 'wdv441_2021');           
+        $this->db = new PDO('mysql:host=localhost;dbname=wdv441_2021;charset=utf8', 'wdv441_user', 'wdv441_2021');           
     }
     
     // takes a keyed array and sets our internal data representation to the array
     function set($dataArray) {
         $this->articleData = $dataArray;
-        
-        //var_dump($this->articleData, "test");
+        var_dump($this->articleData, "test");
     }
 
     // santize the data in the passed array, return the array
     function sanitize($dataArray) {
         // sanitize data based on rules
+        //$this->$dataArray = filter_var($dataArray, FILTER_SANITIZE_STRING);
+        $this->articleData = $dataArray;
+
+        $this->articleTitle = filter_var($this->articleTitle, FILTER_SANITIZE_STRING);
+        $this->articleTitle = filter_var($this->articleContent, FILTER_SANITIZE_STRING);
+        $this->articleTitle = filter_var($this->articleAuthor, FILTER_SANITIZE_STRING);
+        $this->articleTitle = filter_var($this->articleDate, FILTER_SANITIZE_STRING);
+
         
         return $dataArray;
+        //die();
     }
     
     // load a news article based on an id
@@ -63,6 +81,52 @@ class NewsArticles {
     }
     
     // save a news article (inserts and updates)
+       
+    // validate the data we have stored in the data property
+    function validate() {
+        // flag as true initially
+        $isValid = true;
+        
+        // if an error, store to errors using column name as key
+        
+        // validate the data elements in articleData property
+        if (empty($this->articleData['articleTitle']))
+        {
+            // if not valid, set an error and flag as not valid
+            $this->errors['articleTitle'] = "Please enter a valid title";
+            $this->articleTitleErr = "Please enter an Article Title";
+            $isValid = false;
+        } 
+        
+        if (empty($this->articleData['articleContent']))
+        {
+            // if not valid, set an error and flag as not valid
+            $this->errors['articleContent'] = "Please enter content";
+            $this->articleContentErr = "Please enter Article Content";
+            $isValid = false;
+        } 
+
+        if (empty($this->articleData['articleAuthor']))
+        {
+            // if not valid, set an error and flag as not valid
+            $this->errors['articleAuthor'] = "Please enter an author name";
+            $this->articleAuthorErr = "Please enter an Article Author";
+            $isValid = false;
+        } 
+
+        if (empty($this->articleData['articleDate']) || !preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $this->articleData['articleDate']))
+        {
+            // if not valid, set an error and flag as not valid
+            $this->errors['articleDate'] = "Please enter a valid Date";
+            $this->articleDateErr = "Please enter an Article Date";
+            $isValid = false;
+        } 
+                        
+        // return valid t/f
+        return $isValid;
+        die();
+    }
+
     function save() {
         // create a flag to track if the save was successful
         $isSaved = false;
@@ -116,34 +180,27 @@ class NewsArticles {
         // return the success flage
         return $isSaved;
     }
-    
-    // validate the data we have stored in the data property
-    function validate() {
-        // flag as true initially
-        $isValid = true;
-        
-        // if an error, store to errors using column name as key
-        
-        // validate the data elements in articleData property
-        if (empty($this->articleData['articleTitle']))
-        {
-            // if not valid, set an error and flag as not valid
-            $this->errors['articleTitle'] = "Please enter a title";
-            $isValid = false;
-        }        
-                        
-        // return valid t/f
-        return $isValid;
+
+    function getArticles(){
+
+        $articleList = ("SELECT * FROM newsarticles");
+        global $stmt;
+        $stmt = $this->db->prepare($articleList);
+
+        $stmt->execute();
+
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
     }
     
     // get a list of news articles as an array
     function getList() {
         $articleList = array();
 
-        // TODO: get the news articles and store into $articleList
+        // TO DO: get the news articles and store into $articleList
+        //$articleList = ("SELECT * FROM newsarticles");
 
         // return the list of articles
-        return $articleList;        
+        return $articleList;      
     }
 }
 ?>

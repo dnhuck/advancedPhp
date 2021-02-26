@@ -66,22 +66,21 @@
             }
 
             return $valid;
-
         }
 
         function sendEmail(){
 
-            //$valid = $this->validateDataProperties();
+            $valid = $this->validateDataProperties();
 
             // MAILER FUNCTION        
             $mailTo = 'contact@davidhuck.net';
             $headers = "From: " . $this->$email;
             $txt = "You have recieved an email from " . $this->$fName . " " . $this->$lName  . ".\n\n". "Date of birth: " . $this->$dob . "\n\n" . "Email: " . $this->$email . "\n\n" . $this->$message;
     
-            mail($mailTo, $message, $txt, $headers);
+            mail($mailTo, $txt, $headers);
             echo "Email Sent!";
             header('Location: weekTwoAssignment.php');
-            return $txt;
+            //return $txt;
             exit;
         }
             

@@ -11,7 +11,7 @@ if(isset($_POST['submit'])){
     $contactForm->setPropertiesFromArray($_POST);
 
     //VALIDATING THE DATA FROM THE ARRAY
-    $valid = $contactForm->validateDataProperties();
+    $valid = $contactForm->validateDataProperties();    
 
     if($valid == true){
         $contactForm->sendEmail();
