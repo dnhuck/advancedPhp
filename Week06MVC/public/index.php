@@ -2,7 +2,7 @@
 require_once('../inc/NewsArticles.class.php');
 
 $newsArticle = new NewsArticles();
-//var_dump($newsArticle->load(1));
+var_dump($newsArticle->load(1));
 //var_dump($newsArticle->articleData);
 //die;
 
@@ -18,7 +18,7 @@ $article = array(
 $newsArticle->set($article);
 */
 
-//$newsArticle->articleData["articleAuthor"] = "GG2";
+$newsArticle->articleData["articleAuthor"] = "GG2";
 
 //var_dump($newsArticle->articleData);
 
@@ -28,8 +28,6 @@ if ($newsArticle->validate()) {
     // do something with the errors
     var_dump($newsArticle->errors);
 }
-
-$newsArticle->getList();
 
 //var_dump($newsArticle->articleData);
 
@@ -41,6 +39,4 @@ $newsArticle->articleData['articleTitle'] = "Test Article 1a";
 //var_dump($newsArticle->save());
 
 //var_dump($newsArticle);
-require_once('../tpl/index.tpl.php')
 ?>
-

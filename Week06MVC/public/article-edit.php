@@ -9,7 +9,6 @@ $newsArticle = new NewsArticles();
 // initialize some variables to be used by our view
 $articleDataArray = array();
 $articleErrorsArray = array();
-$newsArticle->getList();
 
 // load the article if we have it
 if (isset($_REQUEST['articleID']) && $_REQUEST['articleID'] > 0) {
@@ -18,9 +17,9 @@ if (isset($_REQUEST['articleID']) && $_REQUEST['articleID'] > 0) {
     $articleDataArray = $newsArticle->articleData;
 }
 
-if(isset($_POST['Cancel'])){
-    location('article-list.php');
-    exit;
+if (isset($_POST['Cancel'])) {
+	header("location: article-list.php");
+	exit;
 }
 
 // apply the data if we have new data
@@ -45,7 +44,5 @@ if (isset($_POST['Save'])) {
     }
 }
 
-require_once('../tpl/article-edit.tpl.php')
-
+require_once('../tpl/article-edit.tpl.php');
 ?>
-
